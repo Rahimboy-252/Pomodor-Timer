@@ -3,10 +3,11 @@ const stopEl = document.getElementById("stop")
 const resetEl = document.getElementById("reset")
 const timerEl = document.getElementById("timer")
 
-let interval
+let interval = null
 let timeLeft = 1500
+let point = 2
 
-function updateTimer(){
+function updateTimer() {
     let minutes = Math.floor(timeLeft / 60)
     let seconds = timeLeft % 60;
     let formattedTime = `${minutes.toString().padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`
@@ -15,24 +16,29 @@ function updateTimer(){
 }
 
 
-function startTimer(){
+function startTimer() {
+    if (interval !== null) return;
     interval = setInterval(() => {
+        
+        
         timeLeft--;
-        updateTimer()
-        if (timeLeft === 0){
+        if (timeLeft === 0) {
             clearInterval(interval)
             alert("Time's up!")
             timeLeft = 1500
         }
+        updateTimer()
     }, 1000);
 }
-function stopTimer(){
+function stopTimer() {
     clearInterval(interval)
+    interval = null
 }
-function resetTimer(){
+function resetTimer() {
     clearInterval(interval)
     timeLeft = 1500
     updateTimer()
+    interval = null
 }
 
 startEl.addEventListener("click", startTimer)
